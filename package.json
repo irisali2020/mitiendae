@@ -1,0 +1,13 @@
+{
+  "name": "mitiendae",
+  "version": "1.0.0",
+  "description": "Proyecto de pre-entrega",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Iris Henriquez",
+  "license": "MIT",
+  "type": "module"
+}
