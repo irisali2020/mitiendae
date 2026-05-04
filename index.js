@@ -1,56 +1,79 @@
-//--Prueba del FakeStore
+// Capturar las palabras que viene despues de npm run start
 
-// fetch('https://fakestoreapi.com/products')
-//   .then(response => response.json())
-//   .then(data => console.log(data));
-
-//     ---FETCH para obteneer listado de productos con la API fakestoreapi
-
-// const config = {
-//     method: 'GET',
-//     headers: {
-//         'Content-Type': 'application/json',
-//         // 'Authorization': 'Bearer token' ,
-//         },
-// };
-
-// fetch('https://fakestoreapi.com/products', config)
-// .then((response) => response.json())
-// .then((data) => {   
-
-//     data.forEach(producto => {
-//         console.log(`Id: ${producto.id} -- Nombre: ${producto.title} -- Precio: ${producto.price} -- Categoria: ${producto.category} -- Imagen: ${producto.image}`);
-//     });
-// })
-
-// .catch(error => console.error('Error: ', error));
-
-
-
-// //---Buscando un id especifico utilizando destructuring y process.argv
-
-
-const argumentoRuta = process.argv[3]; 
-
-// Extraemos el ID
-const idBuscado = argumentoRuta ? argumentoRuta.split('/')[1] : undefined;
-
-if (!idBuscado) {
-    console.error("Error: Debes ingresar una ruta válida. Ejemplo: npm start -- GET products/15");
-    process.exit(1); 
-}
+const metodo = process.argv[2];
+const recurso = process.argv[3];
 
 const config = {
-    method: 'GET',
     headers: {
         'Content-Type': 'application/json',
-    },
-};
+    }
+}
 
-fetch(`https://fakestoreapi.com/products/${idBuscado}`, config)
+//    ---REQ I:GET con FETCH con la API fakestoreapi
+
+function productosTodos () {
+    fetch('https://fakestoreapi.com/products', {...config, method: 'GET'})
     .then((response) => response.json())
-    .then(({ id, title }) => {
-        console.log(`Producto encontrado -> Id: ${id} -- Nombre: ${title}`);
+    .then((data) => {
+         
+        console.log(data);
+    })
+    .catch(error => console.error('Error: ', error));
+}
+  
+//---REQ II:buscando un id especifico utilizando destructuring y process.argv
+
+
+function unProducto(id) {
+    fetch(`https://fakestoreapi.com/products/${id}`, {...config, method: 'GET' })
+    .then((response) => response.json())
+    .then((data) => {
+         
+        console.log(data);
     })
     .catch(error => console.error('Error: ', error));
 
+}
+
+// --- REQ III: Agregrando un producto. 
+    
+async function agregarProducto(product) {
+        const response = await fetch("https://fakestoreapi.com/products", {
+    method: "POST",
+    headers: {"Content-Type": "application/json" },
+    body: JSON.stringify(product),
+});
+
+    const data = await response.json();
+
+    console.log(data);
+
+    }
+       
+ /// INTERPRETADOR
+   
+ function interpretador() {
+
+    const[tipoRecurso, id] = recurso.split('/');
+
+    if (metodo === 'GET' && tipoRecurso === 'products') {
+        if (id) {
+            unProducto(id);
+        } else {
+            productosTodos();
+        }
+    } 
+
+ else if (metodo === 'POST' && tipoRecurso === 'products') {
+    const nuevoProducto = { title: "T-Shirt-Rex", price: 30.50, category: "300 remeras" };  
+    agregarProducto(nuevoProducto);
+} 
+else {
+        console.log("Comando no reconocido. Verifica la instrucción.");
+    }
+}
+
+// Ejecutamos el programa
+interpretador();
+
+ 
