@@ -1,1 +1,2 @@
-El proyecto MiTiendaE tiene como proposito practicar por fines educativos la aplicación de los metodos GET,POST, PUT, DELETE en el curso de BackEnd Node Js
+El proyecto MiTiendaE tiene como proposito practicar con fines educativos la aplicación de los metodos GET,POST, PUT, DELETE ejecutandolos con un comando desde la terminal. 
+Se crearon las funciones para listar los productos de una fakestoreapi, conseguir un producto especifico, agregar un producto y eliminar un producto. Tambien se creó un código para que según sea el comando que se escribe en la terminal se ejecute el código correspondiente.

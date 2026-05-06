@@ -9,10 +9,10 @@ const config = {
     }
 }
 
-//    ---REQ I:GET con FETCH con la API fakestoreapi
+//    ---REQ II: CASO GET Consultar todos los productos
 
 function productosTodos () {
-    fetch('https://fakestoreapi.com/products', {...config, method: 'GET'})
+    fetch('https://fakestoreapi.com/products')
     .then((response) => response.json())
     .then((data) => {
          
@@ -21,11 +21,11 @@ function productosTodos () {
     .catch(error => console.error('Error: ', error));
 }
   
-//---REQ II:buscando un id especifico utilizando destructuring y process.argv
+//---REQ II: CASO GET Buscar un producto por ID
 
 
 function unProducto(id) {
-    fetch(`https://fakestoreapi.com/products/${id}`, {...config, method: 'GET' })
+    fetch(`https://fakestoreapi.com/products/${id}`)
     .then((response) => response.json())
     .then((data) => {
          
@@ -35,20 +35,35 @@ function unProducto(id) {
 
 }
 
-// --- REQ III: Agregrando un producto. 
+// --- REQ II: CASO POST Agregrando un producto. 
     
 async function agregarProducto(product) {
-        const response = await fetch("https://fakestoreapi.com/products", {
-    method: "POST",
-    headers: {"Content-Type": "application/json" },
-    body: JSON.stringify(product),
-});
+
+    const response = await fetch("https://fakestoreapi.com/products", {
+        method: "POST",
+        headers: {"Content-Type": "application/json" },
+        body: JSON.stringify(product),
+    });
 
     const data = await response.json();
 
     console.log(data);
 
     }
+
+// ---REQ II: Borrar un producto 
+
+function borrarProducto(id) {
+    fetch(`https://fakestoreapi.com/products/${id}`, {...config, method: 'DELETE' })
+    .then((response) => response.json())
+    .then((data) => {
+         
+        console.log(data);
+    })
+    .catch(error => console.error('Error: ', error));
+
+}
+
        
  /// INTERPRETADOR
    
@@ -65,9 +80,20 @@ async function agregarProducto(product) {
     } 
 
  else if (metodo === 'POST' && tipoRecurso === 'products') {
-    const nuevoProducto = { title: "T-Shirt-Rex", price: 30.50, category: "300 remeras" };  
+    const titulo = process.argv[4];
+    const precio = process.argv[5]; 
+    const categoria = process.argv[6];
+
+    const nuevoProducto = { title: titulo, price: precio, category: categoria };  
     agregarProducto(nuevoProducto);
 } 
+
+else if (metodo === 'DELETE' && tipoRecurso === 'products') {
+    if (id) {
+        borrarProducto(id);
+    } 
+}
+
 else {
         console.log("Comando no reconocido. Verifica la instrucción.");
     }
